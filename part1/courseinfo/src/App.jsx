@@ -21,7 +21,7 @@ function Part(props) {
 function Content(props) {
   return (
     <>
-      {props.parts.map(x => <Part part={x.name} exercises={x.exercises} />)}
+      {props.parts.map((x, i) => <Part key={i} part={x.name} exercises={x.exercises} />)}
     </>
   )
 }

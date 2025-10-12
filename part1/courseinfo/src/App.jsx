@@ -1,55 +1,66 @@
 import { useState } from 'react'
 
-function Header(propt) {
+function Header(props) {
   return (
     <>
-      <h1>{propt.course}</h1>
+      <h1>{props.course}</h1>
     </>
   )
 }
 
-function Part(propt) {
+function Part(props) {
   return (
     <>
       <p>
-        {propt.part} {propt.exercises}
+        {props.part} {props.exercises}
       </p>
     </>
   )
 }
 
-function Content(propt) {
+function Content(props) {
   return (
     <>
-      <Part part={propt.part1} exercises={propt.exercises1} />
-      <Part part={propt.part2} exercises={propt.exercises2} />
-      <Part part={propt.part3} exercises={propt.exercises3} />
+      {props.parts.map(x => <Part part={x.name} exercises={x.exercises} />)}
     </>
   )
 }
 
-function Total(propt) {
+function Total(props) {
+  let number = 0
+  props.parts.forEach(x => number += x.exercises)
+
   return (
     <>
-      <p>Number of exercises {propt.exercises1 + propt.exercises2 + propt.exercises3}</p>
+      <p>Number of exercises {number}</p>
     </>
   )
 }
 
 function App() {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
 
   return (
     <div>
-      <Header course={course} />
-      <Content part1={part1} exercises1={exercises1} part2={part2} exercises2={exercises2} part3={part3} exercises3={exercises3} />
-      <Total exercises1={exercises1} exercises2={exercises2} exercises3={exercises3} />
+      <Header course={course.name} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }

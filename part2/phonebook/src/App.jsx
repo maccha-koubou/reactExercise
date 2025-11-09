@@ -9,7 +9,8 @@ const Filter = ({newFilter, handleFilterChange}) => {
         filter shown with<input value={newFilter} onChange={handleFilterChange}/>
       </div>
     </form>
-)}
+  )
+}
 
 const PersonForm = ({newName, newNumber, handleNameChange, handleNumberChange, addName}) => {
   return (

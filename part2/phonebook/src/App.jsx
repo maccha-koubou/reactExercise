@@ -42,12 +42,34 @@ const Persons = ({personsToShow, deleteName}) => {
   )
 }
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  const style = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
+  return (
+    <div style={style}>
+      {message}
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const personsToShow = persons.filter(person => person.name.includes(newFilter))
 
@@ -87,6 +109,12 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
+          .catch(() => {
+            setErrorMessage(`Information of ${newPerson.name} has already been removed from server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)  
+          })
       }
     } else {
       const newPerson = {
@@ -97,6 +125,10 @@ const App = () => {
       personService
         .create(newPerson)
         .then(returnedPerson => {
+          setErrorMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
@@ -117,6 +149,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} addName={addName} />

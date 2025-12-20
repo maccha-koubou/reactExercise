@@ -15,3 +15,5 @@ const h: number = Number(process.argv[2])
 const w: number = Number(process.argv[3])
 
 console.log(calculateBmi(h, w));
+
+export default calculateBmi;
